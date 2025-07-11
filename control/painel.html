@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - STRAYWOLLF</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--Adicinar Icon Site-->
+    <link rel="icon" href="img/Logo.png" />
+    <style>
+        /* RESET E ESTILOS GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* LAYOUT PRINCIPAL */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background-color: #6a0dad;
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100%;
+            z-index: 100;
+        }
+        
+        .logo-admin {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logo-admin h2 {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .nav-menu {
+            margin-top: 20px;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .nav-item.active {
+            background-color: rgba(255,255,255,0.2);
+            border-left: 3px solid white;
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* SEÇÕES DO PAINEL */
+        .section {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: #6a0dad;
+        }
+        
+        /* FORMULÁRIOS */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #6a0dad;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5a0a9d;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        /* TABELAS */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table th {
+            background-color: #f9f9f9;
+            color: #6a0dad;
+        }
+        
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-solicitado {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-enviado {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelado {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo-admin">
+                <h2>STRAYWOLLF ADMIN</h2>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+                
+                <div class="nav-item" data-section="pedidos">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Pedidos</span>
+                </div>
+                
+                <div class="nav-item" data-section="produtos">
+                    <i class="fas fa-tshirt"></i>
+                    <span>Produtos</span>
+                </div>
+                
+                <div class="nav-item" data-section="clientes">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </div>
+                
+                <div class="nav-item" data-section="feedback">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>Feedback</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="main-content">
+            <div class="header-admin">
+                <h3 style="color: #5a0a9d;">Painel Administrativo</h3>
+                <div class="user-info">
+                    <img src="img/Logo.png" alt="Admin">
+                    <span></span>
+                </div>
+            </div>
+            
+            <!-- DASHBOARD -->
+            <div class="section active" id="dashboard-section">
+                <h3 class="section-title">Visão Geral</h3>
+                
+                <div class="grid grid-2" style="gap: 15px; margin-bottom: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+                        <h4>Pedidos Hoje</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: #6a0dad;" id="pedidos-hoje">0</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+                        <h4>Vendas Mensais</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: #6a0dad;" id="vendas-mensais">R$ 0,00</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center;">
+                        <h4>Clientes Novos</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: #6a0dad;" id="clientes-novos">0</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-2" style="gap: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4>Últimos Pedidos</h4>
+                        <table class="table" id="tabela-ultimos-pedidos">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Data</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4>Produtos Mais Vendidos</h4>
+                        <table class="table" id="tabela-mais-vendidos">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Vendas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PEDIDOS -->
+            <div class="section" id="pedidos-section">
+                <h3 class="section-title">Gerenciamento de Pedidos</h3>
+                
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <input type="text" id="busca-pedidos" placeholder="Buscar pedido..." class="form-control" style="width: 300px;">
+                    </div>
+                    <div>
+                        <select id="filtro-status" class="form-control" style="width: 200px;">
+                            <option value="">Todos os status</option>
+                            <option value="Solicitado">Solicitado</option>
+                            <option value="Enviado">Enviado</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="Reembolso pendente">Reembolso pendente</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Produtos</th>
+                            <th>Total</th>
+                            <th>Pagamento</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-pedidos">
+                        <!-- Dados serão preenchidos via JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-primary" id="carregar-mais-pedidos">Carregar mais pedidos</button>
+                </div>
+            </div>
+            
+            <!-- PRODUTOS -->
+            <div class="section" id="produtos-section">
+                <h3 class="section-title">Gerenciamento de Produtos</h3>
+                
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <button class="btn btn-primary" id="add-product-btn">
+                    <i class="fas fa-plus"></i> Adicionar Produto
+                </button>
+                    </div>
+                    <div class="alert" id="alert-message"></div>
+                </div>
+                <h2>Todos os Produtos</h2>
+        <div class="products-grid" id="all-products">
+            <!-- Todos os produtos serão carregados aqui -->
+        </div>
+            </div>
+
+    <!-- Modal para adicionar/editar produto -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h2 class="modal-title" id="modal-title">Adicionar Novo Produto</h2>
+
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="basic-info">Informações Básicas</button>
+                    <button class="tab-btn" data-tab="variants">Variantes</button>
+                    <button class="tab-btn" data-tab="details">Detalhes</button>
+                </div>
+
+                <form id="product-form">
+                    <div class="tab-content active" id="basic-info-tab">
+                        <div class="form-group">
+                            <label for="product-name">Nome do Produto</label>
+                            <input type="text" id="product-name" class="form-control"
+                                placeholder="Ex: Camiseta Underground" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="product-category">Categoria</label>
+                                    <select id="product-category" class="form-control" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="Moletons">Moletons</option>
+                                        <option value="Camisas">Camisas</option>
+                                        <option value="Regatas">Regatas</option>
+                                        <option value="Calças">Calças</option>
+                                        <option value="Bermudas">Bermudas</option>
+                                        <option value="Calçados">Calçados</option>
+                                        <option value="Acessórios">Acessórios</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="product-price">Preço (R$)</label>
+                                    <input type="number" id="product-price" class="form-control" step="0.01" min="0"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="product-original-price">Preço Original (R$)</label>
+                                    <input type="number" id="product-original-price" class="form-control" step="0.01"
+                                        min="0">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="product-description">Descrição Curta</label>
+                                    <input type="text" id="product-description" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="variants-tab">
+                        <div class="variants-container" id="variants-container">
+                            <!-- Variantes serão adicionadas aqui -->
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="add-variant-btn">
+                            <i class="fas fa-plus"></i> Adicionar Variante
+                        </button>
+                    </div>
+
+                    <div class="tab-content" id="details-tab">
+                        <div class="form-group">
+                            <label for="product-full-description">Descrição Completa</label>
+                            <textarea id="product-full-description" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Especificações</label>
+                            <div id="specs-container">
+                                <!-- Especificações serão adicionadas aqui -->
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="add-spec-btn">
+                                <i class="fas fa-plus"></i> Adicionar Especificação
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" id="save-product-btn">Salvar Produto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template para variante -->
+    <template id="variant-template">
+        <div class="variant-item">
+            <div class="variant-header">
+                <span class="variant-title">Variante</span>
+                <span class="variant-remove"><i class="fas fa-trash"></i></span>
+            </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Cor</label>
+                        <input type="text" class="form-control variant-color-name" placeholder="Ex: Preto" required>
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label>Código da Cor</label>
+                        <input type="color" class="form-control variant-color-code" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Tamanhos e Estoque</label>
+                <div class="sizes-container">
+                    <!-- Tamanhos serão adicionados aqui -->
+                </div>
+                <div style="margin-top: 10px;">
+                    <select class="form-control size-select"
+                        style="width: auto; display: inline-block; margin-right: 10px;" >
+                        <option value="">Selecione um tamanho</option>
+                        <option value="PP">PP</option>
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="XG">XG</option>
+                        <option value="XXG">XXG</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="one">one</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary add-size-btn">Adicionar Tamanho</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Imagens da Variante</label>
+                <div class="image-upload-container">
+                    <input type="file" class="variant-image-upload" accept="image/*" multiple style="display: none;">
+                    <button type="button" class="btn btn-secondary upload-image-btn">
+                        <i class="fas fa-upload"></i>Carregar Imagens</button>
+                    <div class="image-preview"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Template para tamanho -->
+    <template id="size-template">
+        <div class="size-item">
+            <span class="size-name"></span>
+            <input type="number" class="size-stock" min="0" value="0" style="width: 50px;">
+            <span class="remove-size" style="color: #f44336; cursor: pointer;"><i class="fas fa-times"></i></span>
+        </div>
+    </template>
+
+    <!-- Template para especificação -->
+    <template id="spec-template">
+        <div class="form-row spec-item" style="margin-bottom: 10px;">
+            <div class="form-col">
+                <input type="text" class="form-control spec-name" placeholder="Ex: Algodão" required>
+            </div>
+            <div class="form-col">
+                <input type="text" class="form-control spec-value" placeholder="Ex: 100%" required>
+            </div>
+            <div class="form-col" style="flex: 0 0 auto;">
+                <button type="button" class="btn btn-secondary remove-spec-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </template>
+    
+<script>
+    // NAVEGAÇÃO ENTRE SEÇÕES
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove a classe active de todos os itens
+            document.querySelectorAll('.nav-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            
+            // Adiciona a classe active apenas ao item clicado
+            this.classList.add('active');
+            
+            // Oculta todas as seções
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostra apenas a seção correspondente
+            const sectionId = this.getAttribute('data-section') + '-section';
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
+
+    // Objeto para gerenciar o estado da aplicação
+    const appState = {
+        products: [],
+        currentProduct: {
+            id: null,
+            isEditing: false
+        }
+    };
+
+    // Elementos DOM
+    const elements = {
+        allProducts: document.getElementById('all-products'),
+        addProductBtn: document.getElementById('add-product-btn'),
+        productModal: document.getElementById('product-modal'),
+        modalClose: document.getElementById('modal-close'),
+        modalTitle: document.getElementById('modal-title'),
+        productForm: document.getElementById('product-form'),
+        productName: document.getElementById('product-name'),
+        productCategory: document.getElementById('product-category'),
+        productPrice: document.getElementById('product-price'),
+        productOriginalPrice: document.getElementById('product-original-price'),
+        productDescription: document.getElementById('product-description'),
+        productFullDescription: document.getElementById('product-full-description'),
+        variantsContainer: document.getElementById('variants-container'),
+        addVariantBtn: document.getElementById('add-variant-btn'),
+        specsContainer: document.getElementById('specs-container'),
+        addSpecBtn: document.getElementById('add-spec-btn'),
+        saveProductBtn: document.getElementById('save-product-btn'),
+        alertMessage: document.getElementById('alert-message'),
+        tabButtons: document.querySelectorAll('.tab-btn'),
+        tabContents: document.querySelectorAll('.tab-content'),
+        variantTemplate: document.getElementById('variant-template'),
+        sizeTemplate: document.getElementById('size-template'),
+        specTemplate: document.getElementById('spec-template')
+    };
+
+    // Função para mostrar mensagem de alerta
+    function showAlert(message, type = 'error') {
+        if (!elements.alertMessage) return;
+        
+        elements.alertMessage.textContent = message;
+        elements.alertMessage.className = `alert alert-${type}`;
+        elements.alertMessage.style.display = 'block';
+
+        setTimeout(() => {
+            elements.alertMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    // Função para carregar produtos
+    async function loadProducts() {
+        try {
+            const response = await fetch('http://localhost:3000/api/products');
+
+            if (!response.ok) {
+                throw new Error('Erro ao carregar produtos');
+            }
+
+            appState.products = await response.json();
+            renderProducts();
+        } catch (error) {
+            console.error('Erro:', error);
+            showAlert('Erro ao carregar produtos. Por favor, tente novamente.');
+        }
+    }
+
+    // Função para renderizar produtos
+    function renderProducts() {
+        if (!elements.allProducts) return;
+
+        // Limpa o container
+        elements.allProducts.innerHTML = '';
+
+        // Renderiza todos os produtos
+        appState.products.forEach(product => {
+            elements.allProducts.appendChild(createProductCard(product));
+        });
+    }
+
+    // Função para criar card de produto
+    function createProductCard(product) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        // Pega a primeira imagem da primeira variante (ou imagem padrão se não houver)
+        const imageUrl = product.images?.length > 0 ? product.images[0] : 'img/IMG.gif';
+
+        // Formata o preço
+        const price = parseFloat(product.price).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+
+        card.innerHTML = `
+            <img src="${imageUrl}" alt="${product.name}" class="product-card-img">
+            <div class="product-card-info">
+                <h4 class="product-card-title">${product.name}</h4>
+                <p class="product-card-price">${price}</p>
+                <div class="product-card-actions">
+                    <button class="product-card-btn edit" data-id="${product.id}">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="product-card-btn delete" data-id="${product.id}">
+                        <i class="fas fa-trash"></i> Apagar
+                    </button>
+                </div>
+            </div>
+        `;
+
+        return card;
+    }
+
+    // Função para abrir modal de produto
+    function openProductModal(product = null) {
+        if (!elements.productModal) return;
+
+        appState.currentProduct.isEditing = product !== null;
+
+        // Define o título do modal
+        elements.modalTitle.textContent = appState.currentProduct.isEditing ? 'Editar Produto' : 'Adicionar Novo Produto';
+
+        // Limpa o formulário
+        elements.productForm.reset();
+        elements.variantsContainer.innerHTML = '';
+        elements.specsContainer.innerHTML = '';
+
+        // Se estiver editando, preenche os dados do produto
+        if (appState.currentProduct.isEditing) {
+            appState.currentProduct.id = product.id;
+            elements.productName.value = product.name;
+            elements.productCategory.value = product.category;
+            elements.productPrice.value = product.price;
+            elements.productOriginalPrice.value = product.originalPrice || '';
+            elements.productDescription.value = product.description;
+            elements.productFullDescription.value = product.fullDescription || '';
+
+            // Adiciona especificações
+            if (product.specs && product.specs.length > 0) {
+                product.specs.forEach(spec => {
+                    addSpecField(spec.name, spec.value);
+                });
+            }
+
+            // Adiciona variantes
+            if (product.variants && product.variants.length > 0) {
+                product.variants.forEach(variant => {
+                    const variantElement = addVariantField(variant);
+
+                    // Preenche os dados da variante
+                    variantElement.querySelector('.variant-color-name').value = variant.color.name;
+                    variantElement.querySelector('.variant-color-code').value = variant.color.code;
+
+                    // Adiciona tamanhos
+                    if (variant.sizes && variant.sizes.length > 0) {
+                        variant.sizes.forEach(size => {
+                            addSizeField(
+                                variantElement.querySelector('.sizes-container'),
+                                size.name,
+                                size.stock
+                            );
+                        });
+                    }
+                    // Adiciona imagens (preview)
+                        if (variant.images && variant.images.length > 0) {
+                            const imagePreview = variantElement.querySelector('.image-preview');
+                            variant.images.forEach(imageUrl => {
+                                addImagePreview(imagePreview, imageUrl);
+                            });
+                        }
+                });
+            }
+        } else {
+            appState.currentProduct.id = null;
+            // Adiciona uma variante vazia por padrão
+            addVariantField();
+        }
+
+        // Mostra o modal
+        elements.productModal.style.display = 'flex';
+    }
+
+    // Função para adicionar campo de variante
+    function addVariantField(variantData = null) {
+        if (!elements.variantTemplate || !elements.variantsContainer) return null;
+
+        const variantClone = elements.variantTemplate.content.cloneNode(true);
+        const variantElement = variantClone.querySelector('.variant-item');
+
+        // Configura eventos
+        variantElement.querySelector('.variant-remove').addEventListener('click', async () => {
+            if (appState.currentProduct.isEditing && variantData && variantData.id) {
+                if (confirm('Tem certeza que deseja excluir esta variante e todas as suas imagens?')) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/variants/${variantData.id}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Erro ao excluir variante');
+                        }
+
+                        variantElement.remove();
+                        showAlert('Variante excluída com sucesso!', 'success');
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        showAlert('Erro ao excluir variante. Por favor, tente novamente.');
+                    }
+                }
+            } else {
+                variantElement.remove();
+            }
+        });
+
+        variantElement.querySelector('.upload-image-btn').addEventListener('click', () => {
+            variantElement.querySelector('.variant-image-upload').click();
+        });
+
+        variantElement.querySelector('.variant-image-upload').addEventListener('change', (e) => {
+            handleImageUpload(e, variantElement.querySelector('.image-preview'));
+        });
+
+        variantElement.querySelector('.add-size-btn').addEventListener('click', () => {
+            const sizeSelect = variantElement.querySelector('.size-select');
+            const sizeName = sizeSelect.value;
+
+            if (sizeName) {
+                addSizeField(
+                    variantElement.querySelector('.sizes-container'),
+                    sizeName
+                );
+                sizeSelect.value = '';
+            }
+        });
+
+        elements.variantsContainer.appendChild(variantElement);
+        return variantElement;
+    }
+
+    // Função para adicionar campo de tamanho
+    function addSizeField(container, name, stock = 0) {
+        if (!container || !elements.sizeTemplate) return;
+
+        // Verifica se o tamanho já existe
+        const existingSize = container.querySelector(`.size-item .size-name[data-name="${name}"]`);
+        if (existingSize) return;
+
+        const sizeClone = elements.sizeTemplate.content.cloneNode(true);
+        const sizeElement = sizeClone.querySelector('.size-item');
+
+        sizeElement.querySelector('.size-name').textContent = name;
+        sizeElement.querySelector('.size-name').setAttribute('data-name', name);
+        sizeElement.querySelector('.size-stock').value = stock;
+
+        sizeElement.querySelector('.remove-size').addEventListener('click', () => {
+            sizeElement.remove();
+        });
+
+        container.appendChild(sizeElement);
+    }
+
+    // Função para adicionar campo de especificação
+    function addSpecField(name = '', value = '') {
+        if (!elements.specTemplate || !elements.specsContainer) return;
+
+        const specClone = elements.specTemplate.content.cloneNode(true);
+        const specElement = specClone.querySelector('.spec-item');
+
+        specElement.querySelector('.spec-name').value = name;
+        specElement.querySelector('.spec-value').value = value;
+
+        specElement.querySelector('.remove-spec-btn').addEventListener('click', () => {
+            specElement.remove();
+        });
+
+        elements.specsContainer.appendChild(specElement);
+    }
+
+    // Função para lidar com upload de imagens
+async function handleImageUpload(event, previewContainer) {
+    if (!previewContainer) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.target.files;
+
+    if (files.length === 0) return;
+
+    try {
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append('images', files[i]);
+        }
+
+        const response = await fetch('http://localhost:3000/api/upload', {
+            method: 'POST',
+            body: formData
+            // Não adicione Content-Type header - o browser vai definir automaticamente
+            // com o boundary correto para FormData
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao fazer upload das imagens');
+        }
+
+        const data = await response.json();
+
+        // Adiciona preview das imagens
+        data.imageUrls.forEach(url => {
+            addImagePreview(previewContainer, url);
+        });
+
+    } catch (error) {
+        console.error('Erro:', error);
+        showAlert('Erro ao fazer upload das imagens');
+    }
+}
+
+    // Função para adicionar preview de imagem
+function addImagePreview(container, imageUrl) {
+    if (!container) return;
+
+    console.log('Adicionando preview para:', imageUrl); // Adicione este log
+    
+    const imgElement = document.createElement('div');
+    imgElement.className = 'image-preview-item';
+    
+    // Extrai o nome do arquivo da URL
+    const filename = imageUrl.split('/').pop();
+    
+    imgElement.innerHTML = `
+        <img src="${imageUrl}">
+        <span class="image-preview-remove" data-filename="${filename}">&times;</span>
+    `;
+
+        imgElement.querySelector('.image-preview-remove').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const filename = e.target.getAttribute('data-filename');
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/images/${filename}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao deletar imagem');
+                }
+
+                imgElement.remove();
+            } catch (error) {
+                console.error('Erro:', error);
+                showAlert('Erro ao deletar imagem. Por favor, tente novamente.');
+            }
+        });
+
+        container.appendChild(imgElement);
+    }
+
+    // Função para salvar produto
+    async function saveProduct(event) {
+        event.preventDefault();
+
+        // Validação básica
+        if (!elements.productName.value || !elements.productCategory.value || !elements.productPrice.value) {
+            showAlert('Por favor, preencha todos os campos obrigatórios');
+            return;
+        }
+
+        // Coleta dados do formulário
+        const productData = {
+            name: elements.productName.value,
+            category: elements.productCategory.value,
+            price: parseFloat(elements.productPrice.value),
+            originalPrice: elements.productOriginalPrice.value ? parseFloat(elements.productOriginalPrice.value) : null,
+            description: elements.productDescription.value,
+            fullDescription: elements.productFullDescription.value,
+            specs: [],
+            variants: []
+        };
+
+        // Coleta especificações
+        document.querySelectorAll('.spec-item').forEach(spec => {
+            productData.specs.push({
+                name: spec.querySelector('.spec-name').value,
+                value: spec.querySelector('.spec-value').value
+            });
+        });
+
+        // Coleta variantes
+        document.querySelectorAll('.variant-item').forEach(variant => {
+            const variantData = {
+                color: {
+                    name: variant.querySelector('.variant-color-name').value,
+                    code: variant.querySelector('.variant-color-code').value
+                },
+                images: [],
+                sizes: []
+            };
+
+            // Coleta imagens
+            variant.querySelectorAll('.image-preview-item img').forEach(img => {
+                variantData.images.push(img.src);
+            });
+
+            // Coleta tamanhos
+            variant.querySelectorAll('.size-item').forEach(size => {
+                variantData.sizes.push({
+                    name: size.querySelector('.size-name').textContent,
+                    stock: parseInt(size.querySelector('.size-stock').value) || 0
+                });
+            });
+
+            productData.variants.push(variantData);
+        });
+
+        try {
+            let response;
+
+            if (appState.currentProduct.isEditing) {
+                // Atualiza produto existente
+                response = await fetch(`http://localhost:3000/api/products/${appState.currentProduct.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                // Cria novo produto
+                response = await fetch('http://localhost:3000/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+            }
+
+            if (!response.ok) {
+                throw new Error('Erro ao salvar produto');
+            }
+
+            const data = await response.json();
+
+            showAlert(`Produto ${appState.currentProduct.isEditing ? 'atualizado' : 'criado'} com sucesso!`, 'success');
+
+            // Fecha o modal e recarrega os produtos
+            elements.productModal.style.display = 'none';
+            loadProducts();
+
+        } catch (error) {
+            console.error('Erro:', error);
+            showAlert('Erro ao salvar produto. Por favor, tente novamente.');
+        }
+    }
+
+    // Função para deletar produto
+    async function deleteProduct(productId) {
+        if (!confirm('Tem certeza que deseja excluir este produto e todas as suas imagens?')) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/products/${productId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao excluir produto');
+            }
+
+            showAlert('Produto e todas as suas imagens excluídos com sucesso!', 'success');
+            loadProducts();
+        } catch (error) {
+            console.error('Erro:', error);
+            showAlert('Erro ao excluir produto. Por favor, tente novamente.');
+        }
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        // Carrega produtos ao iniciar
+        loadProducts();
+
+        // Botão para adicionar produto
+        if (elements.addProductBtn) {
+            elements.addProductBtn.addEventListener('click', () => {
+                openProductModal();
+            });
+        }
+
+        // Fechar modal
+        if (elements.modalClose) {
+            elements.modalClose.addEventListener('click', () => {
+                elements.productModal.style.display = 'none';
+            });
+        }
+
+        // Troca entre abas
+        if (elements.tabButtons && elements.tabContents) {
+            elements.tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove classe 'active' de todos os botões e conteúdos
+                    elements.tabButtons.forEach(b => b.classList.remove('active'));
+                    elements.tabContents.forEach(c => c.classList.remove('active'));
+
+                    // Adiciona classe 'active' para o botão e conteúdo clicado
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+        }
+
+        // Adicionar variante
+        if (elements.addVariantBtn) {
+            elements.addVariantBtn.addEventListener('click', () => {
+                addVariantField();
+            });
+        }
+
+        // Adicionar especificação
+        if (elements.addSpecBtn) {
+            elements.addSpecBtn.addEventListener('click', () => {
+                addSpecField();
+            });
+        }
+
+        // Salvar produto
+        if (elements.productForm) {
+            elements.productForm.addEventListener('submit', saveProduct);
+        }
+
+        // Delegation para eventos de edição/exclusão
+        document.addEventListener('click', (e) => {
+            // Editar produto
+            if (e.target.closest('.product-card-btn.edit')) {
+                const productId = e.target.closest('.product-card-btn').getAttribute('data-id');
+                const product = appState.products.find(p => p.id == productId);
+                if (product) openProductModal(product);
+            }
+
+            // Excluir produto
+            if (e.target.closest('.product-card-btn.delete')) {
+                const productId = e.target.closest('.product-card-btn').getAttribute('data-id');
+                deleteProduct(productId);
+            }
+        });
+    });
+</script>
+</body>
+</html>

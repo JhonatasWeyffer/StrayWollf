@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha - StrayWollf</title>
+    <link rel="icon" href="../../img/Logo.png">
+    <style>
+      @font-face {
+        font-family: "Street";
+        src: url("../../font/DaStreets.woff") format("woff");
+      }
+        
+        :root {
+            --roxo-principal: #6a0dad;
+            --roxo-escuro: #4b0082;
+            --preto: #3d3d3d;
+            --preto-solido: #000000;
+            --branco: #ffffff;
+            --rosa-neon: #ff00ff;
+            --roxo-neon: #8a2be2;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('../../img/background.jpg');
+            color: var(--branco);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(39, 39, 39, 0.5);
+      }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            background-color: var(--preto-solido);
+            border-radius: 15px;
+            box-shadow: 0 0 30px var(--roxo-principal);
+            border: 1px solid var(--roxo-principal);
+            animation: pulseBorder 3s infinite alternate;
+            z-index: 100;
+        }
+        
+        @keyframes pulseBorder {
+            0% { box-shadow: 0 0 20px var(--roxo-principal); }
+            100% { box-shadow: 0 0 40px var(--rosa-neon); }
+        }
+        
+        .logo-container {
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            width: 200px;
+            user-select: none;
+        }
+        
+        .store-name {
+            font-family: 'Street', sans-serif;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            background-image: linear-gradient(90deg, var(--roxo-neon), var(--rosa-neon), var(--roxo-neon));
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            user-select: none;
+            animation: animarTexto 5s linear infinite;
+        }
+        
+        @keyframes animarTexto {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+            user-select: none;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--branco);
+            font-size: 1rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--roxo-principal);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--branco);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--rosa-neon);
+            box-shadow: 0 0 10px var(--roxo-neon);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            user-select: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--roxo-principal), var(--roxo-escuro));
+            color: var(--branco);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            user-select: none;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, var(--roxo-escuro), var(--roxo-principal));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--branco);
+            font-size: 0.9rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease;
+            user-select: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .error {
+            background-color: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+        }
+        
+        .success {
+            background-color: rgba(81, 207, 102, 0.2);
+            border: 1px solid #51cf66;
+        }
+        
+        /* Media Queries para responsividade */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+            
+            .store-name {
+                font-size: 50px;
+            }
+            input, button {
+                padding: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 1.2rem;
+                border-radius: 10px;
+            }
+            
+            .logo {
+                width: 170px;
+            }
+            
+            .form-group {
+                margin-bottom: 1.2rem;
+            }
+            
+            input::placeholder {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="../../img/Logo.png" alt="StrayWollf" class="logo" loading="lazy">
+            <div class="store-name">StrayWollf</div>
+        </div>
+        
+        <form id="reset-form">
+            <input type="hidden" id="token" value="">
+            
+            <div class="form-group">
+                <label for="new-password">Nova Senha</label>
+                <input type="password" id="new-password" placeholder="Mínimo 6 caracteres" required minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">Confirmar Nova Senha</label>
+                <input type="password" id="confirm-password" placeholder="Digite novamente" required minlength="6">
+            </div>
+            
+            <button type="submit">Redefinir Senha</button>
+        </form>
+         <p style="color: #333; text-align: center; margin-top: 3%;" id="year">
+        </p>
+        
+        <div id="message" class="message"></div>
+    </div>
+<script src="../../libs/slick/path/forgot.js" defer></script>
+<script>
+       const year = new Date().getFullYear();
+    document.getElementById("year").textContent = `© ${year} StrayWollf. Todos os direitos reservados.`;
+</script>
+</body>
+</html>

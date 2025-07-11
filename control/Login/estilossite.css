@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('fundo.jpg'); /* Adicione o nome da sua imagem aqui */
+    background-size: cover; /* Ajusta o tamanho da imagem para cobrir toda a tela */
+    background-position: center; /* Centraliza a imagem */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.login-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 320px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(10px);
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    backdrop-filter: blur(5px);
+    user-select: none;
+}
+
+.login-container:hover {
+    transform: translateY(5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+.fechar {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+
+.fechar-login {
+    font-size: 40px;
+    color: #7f5af0;
+    text-decoration: none;
+}
+
+.fechar-login:hover {
+    color: #7f5af0;
+}
+
+h2 { /* Text do */
+    text-align: center;
+    color: #7f5af0;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #7f5af0;
+}
+
+.input-group input /*Box do email e senha*/
+{
+    width: 100%;
+    padding: 2.5px;
+    font-size: 14px;
+    border: 1px solid #7f5af0;
+    border-radius: 5px;
+    margin-top: 2px;
+} 
+
+.input-group input:focus {
+    border-color: #7f5af0;
+    outline: none;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #7f5af0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #7f5af0;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.footer a {
+    color: #7f5af0;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
